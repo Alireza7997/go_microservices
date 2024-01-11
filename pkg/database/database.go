@@ -76,6 +76,12 @@ func New(dbs map[string]Database, debug bool) (cons map[string]RelationalDatabas
 	return
 }
 
+func Connect(dbFunc RelationalDatabaseFunction) *sql.DB {
+	db, _ := dbFunc()
+
+	return db
+}
+
 func CloseDbs(cons map[string]*sql.DB) {
 	for _, con := range cons {
 		con.Close()
