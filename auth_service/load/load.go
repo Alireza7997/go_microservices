@@ -8,7 +8,6 @@ import (
 	"microservice/pkg/database"
 	"microservice/pkg/loader"
 
-	"github.com/doug-martin/goqu/v9"
 	migrate "github.com/rubenv/sql-migrate"
 )
 
@@ -58,9 +57,6 @@ func initDatabase() {
 		}
 	}
 
-	db, _ := global.DB()
-	defer db.Close()
-	global.GoquDB = goqu.New("postgres", db)
 }
 
 func migrateLatestChanges() {

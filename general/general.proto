@@ -1,7 +1,7 @@
 syntax = "proto3";
 
-package general;
-option go_package = "general/";
+package microservice.general;
+option go_package = "microservice/general";
 
 message Error {
     int64  Code     = 1;

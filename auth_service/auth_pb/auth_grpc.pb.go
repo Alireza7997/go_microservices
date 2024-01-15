@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.3.0
 // - protoc             v3.12.4
-// source: auth_pb/auth.proto
+// source: auth_service/auth_pb/auth.proto
 
 package auth_pb
 
@@ -19,7 +19,7 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	AuthService_Register_FullMethodName = "/auth.AuthService/Register"
+	AuthService_Register_FullMethodName = "/microservice.auth.AuthService/Register"
 )
 
 // AuthServiceClient is the client API for AuthService service.
@@ -96,7 +96,7 @@ func _AuthService_Register_Handler(srv interface{}, ctx context.Context, dec fun
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var AuthService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "auth.AuthService",
+	ServiceName: "microservice.auth.AuthService",
 	HandlerType: (*AuthServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -105,5 +105,5 @@ var AuthService_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "auth_pb/auth.proto",
+	Metadata: "auth_service/auth_pb/auth.proto",
 }
