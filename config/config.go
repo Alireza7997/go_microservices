@@ -7,7 +7,7 @@ type (
 		CurrentMicroservice   Microservice
 		Gateway               Microservice            `yaml:"gateway"`
 		Microservices         map[string]Microservice `yaml:"microservices"`
-		Debug                 bool                    `taml:"debug"`
+		Debug                 bool                    `yaml:"debug"`
 		Domain                string                  `yaml:"domain"`
 		PWD                   string                  `yaml:"pwd"`
 		AllowOrigins          string                  `yaml:"allow_origins"`

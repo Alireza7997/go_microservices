@@ -130,7 +130,7 @@ func (mux *Router) Handle(pattern string, handler http.Handler, method string) {
 			}
 		}
 
-		split = variableRegex.ReplaceAllString(split, "")
+		split = variableRegex.ReplaceAllString(split, "[^/]+")
 		reformatPattern += split + "/"
 	}
 	if reformatPattern == "" {
@@ -158,13 +158,9 @@ func (mux *Router) runWithMiddlewares(w http.ResponseWriter, r *http.Request) {
 		h.ServeHTTP(w, r)
 	})
 
-	var function http.Handler
+	var function http.Handler = handler
 	for i := len(mux.middlewares) - 1; i > -1; i-- {
 		mid := mux.middlewares[i]
-		if function == nil {
-			function = mid(handler)
-			continue
-		}
 		function = mid(function)
 	}
 	function.ServeHTTP(w, r)
