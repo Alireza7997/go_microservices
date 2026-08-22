@@ -1,8 +1,10 @@
-module microservice/auth
+module microservice/auth_service
 
 go 1.21.5
 
 require (
+	github.com/DATA-DOG/go-sqlmock v1.5.0
+	github.com/golang-jwt/jwt/v5 v5.2.1
 	github.com/kataras/iris/v12 v12.2.9
 	github.com/rubenv/sql-migrate v1.6.0
 	golang.org/x/crypto v0.18.0

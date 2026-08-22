@@ -3,7 +3,7 @@ package load
 import (
 	"fmt"
 	"log"
-	"microservice/auth/global"
+	"microservice/auth_service/global"
 	"microservice/config"
 	"microservice/pkg/database"
 	"microservice/pkg/loader"
