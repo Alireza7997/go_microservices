@@ -1,0 +1,26 @@
+# Secrets / local config
+env.yaml
+env.yml
+
+# Binaries
+*.exe
+gateway/gateway
+auth_service/auth_service
+bin/
+build/
+
+# IDE / editor
+.idea/
+.vscode/
+.kilo/
+
+# Dependencies
+node_modules/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs & temp
+*.log
+tmp/
