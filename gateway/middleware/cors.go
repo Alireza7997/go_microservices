@@ -1,65 +1,57 @@
 package middleware
 
 import (
-	"fmt"
 	"net/http"
 	"strings"
 
-	g "service/gateway/global"
-
-	"service/pkg/errors"
+	g "microservice/gateway/global"
 )
 
-var allow_headers = "Origin, Content-Length, Content-Type"
-var allow_methods = "GET, POST, PUT, PATCH, DELETE, OPTIONS"
-
-func AddHeaders(headers []string) {
-	for i := 0; i < len(headers); i++ {
-		allow_headers += ", " + headers[i]
-	}
-}
+var allowMethods = "GET, POST, PUT, PATCH, DELETE, OPTIONS"
+var allowHeaders = "Origin, Content-Length, Content-Type"
 
 func Cors(next http.Handler) http.Handler {
-	allow_origins := strings.Split(g.CFG.AllowOrigins, ",")
-
-	for i := range allow_origins {
-		allow_origins[i] = strings.TrimSpace(allow_origins[i])
+	allowedOrigins := strings.Split(g.CFG.AllowOrigins, ",")
+	for i := range allowedOrigins {
+		allowedOrigins[i] = strings.TrimSpace(allowedOrigins[i])
 	}
+
+	if g.CFG.AllowHeaders != "" {
+		allowHeaders += ", " + g.CFG.AllowHeaders
+	}
+
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		// Check if origin exists
-		// Otherwise it is not a cors request
 		origin := r.Header.Get("Origin")
 		if origin == "" {
 			next.ServeHTTP(w, r)
 			return
 		}
 
-		// request is not a CORS request but have origin header.
-		// for example, use fetch api
 		host := r.Host
 		if origin == "http://"+host || origin == "https://"+host {
 			next.ServeHTTP(w, r)
 			return
 		}
 
-		// Check for origin access
 		found := false
-		for i := range allow_origins {
-			if allow_origins[i] == origin {
+		for _, allowed := range allowedOrigins {
+			if allowed == "*" || allowed == origin {
 				found = true
 				break
 			}
 		}
 
-		// Forbid if origin does not match
-		if !found && len(allow_origins) != 0 && allow_origins[0] != "*" {
-			panic(errors.New(errors.ForbiddenStatus, errors.DoNothing, "CorsError", ""))
-		} else if strings.ToUpper(r.Method) == "OPTIONS" {
-			w.Header().Set("Vary", "Origin")
-			w.Header().Set("Access-Control-Max-Age", fmt.Sprint(g.CFG.MaxAge))
-			w.Header().Set("Access-Control-Allow-Origin", origin)
-			w.Header().Set("Access-Control-Allow-Methods", allow_methods)
-			w.Header().Set("Access-Control-Allow-Headers", allow_headers)
+		if !found && len(allowedOrigins) != 0 {
+			w.WriteHeader(http.StatusForbidden)
+			return
+		}
+
+		w.Header().Set("Vary", "Origin")
+		w.Header().Set("Access-Control-Allow-Origin", origin)
+		w.Header().Set("Access-Control-Allow-Methods", allowMethods)
+		w.Header().Set("Access-Control-Allow-Headers", allowHeaders)
+
+		if strings.ToUpper(r.Method) == http.MethodOptions {
 			w.WriteHeader(http.StatusNoContent)
 			return
 		}

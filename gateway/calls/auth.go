@@ -3,7 +3,7 @@ package calls
 import (
 	"errors"
 	"fmt"
-	"microservice/auth/auth_pb"
+	"microservice/auth_service/auth_pb"
 	g "microservice/gateway/global"
 	"microservice/general"
 	"strings"

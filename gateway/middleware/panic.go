@@ -2,60 +2,51 @@ package middleware
 
 import (
 	"encoding/json"
-	"log"
+	"log/slog"
 	"net/http"
-	"runtime/debug"
 
-	"service/gateway/dto"
-	g "service/gateway/global"
-
-	"service/pkg/errors"
-	"service/pkg/translator"
+	pkgErrors "microservice/pkg/errors"
 )
+
+type ErrorResponse struct {
+	Code    int64  `json:"code"`
+	Message string `json:"message"`
+}
 
 func Panic(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		ctx := r.Context()
-		translate := ctx.Value(g.TranslateKey).(translator.TranslatorFunc)
 		defer func() {
-			errInterface := recover()
-			if errInterface == nil {
+			recovered := recover()
+			if recovered == nil {
 				return
 			}
-			if err, ok := errInterface.(error); ok && errors.IsServerError(err) {
-				code, action, message, _, errors := errors.HttpError(err)
-				res := dto.PanicResponse{
-					Message: translate(message),
-					Code:    code,
-					Action:  action,
-					Errors:  errors,
+
+			if statusErr, ok := recovered.(pkgErrors.StatusError); ok {
+				code := statusErr.StatusCode()
+				if code < 100 || code > 599 {
+					code = http.StatusInternalServerError
 				}
-				resBytes, _ := json.Marshal(res)
-				if g.CFG.Debug {
-					log.Println(err)
-				}
-				if r.Header.Get("timeout") == "yes" {
-					return
-				}
-				w.WriteHeader(code)
-				w.Write(resBytes)
-				if code == http.StatusRequestTimeout {
-					r.Header.Set("timeout", "yes")
-				}
-			} else {
-				stack := string(debug.Stack())
-				g.Logger.Panic(errInterface, r, stack)
-				res := dto.PanicResponse{
-					Message: translate("InternalServerError"),
-					Action:  int(errors.Report),
-					Code:    http.StatusInternalServerError,
-					Errors:  nil,
-				}
-				resBytes, _ := json.Marshal(res)
-				w.WriteHeader(res.Code)
-				w.Write(resBytes)
+				writeError(w, int(code), ErrorResponse{Code: code, Message: statusErr.Message()})
+				return
 			}
+
+			if err, ok := recovered.(error); ok {
+				slog.Error("request panicked", "err", err)
+			} else {
+				slog.Error("request panicked", "err", recovered)
+			}
+
+			writeError(w, http.StatusInternalServerError, ErrorResponse{
+				Code:    http.StatusInternalServerError,
+				Message: "internal server error",
+			})
 		}()
 		next.ServeHTTP(w, r)
 	})
+}
+
+func writeError(w http.ResponseWriter, code int, res ErrorResponse) {
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
+	w.WriteHeader(code)
+	_ = json.NewEncoder(w).Encode(res)
 }

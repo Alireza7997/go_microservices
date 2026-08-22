@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	"microservice/auth/auth_pb"
+	"microservice/auth_service/auth_pb"
 	"microservice/gateway/calls"
 	"microservice/gateway/dto"
 	g "microservice/gateway/global"
