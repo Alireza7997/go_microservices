@@ -6,7 +6,7 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}
       POSTGRES_DB: authDB
     ports:
-      - "5432:5432"
+      - "5433:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
     healthcheck:
@@ -27,16 +27,40 @@ services:
       postgres:
         condition: service_healthy
 
+  chat:
+    build:
+      context: .
+      dockerfile: chat_service/Dockerfile
+    volumes:
+      - ./env.yaml:/app/env.yaml:ro
+
+  greet:
+    build:
+      context: .
+      dockerfile: greet_service/Dockerfile
+    volumes:
+      - ./env.yaml:/app/env.yaml:ro
+
   gateway:
     build:
       context: .
       dockerfile: gateway/Dockerfile
     ports:
-      - "6000:6000"
+      - "8000:6000"
     volumes:
       - ./env.yaml:/app/env.yaml:ro
     depends_on:
       - auth
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        NEXT_PUBLIC_GATEWAY_URL: http://localhost:8000
+    ports:
+      - "8080:3000"
+    depends_on:
+      - gateway
 
 volumes:
   pgdata:

@@ -1,46 +1,16 @@
 package calls
 
 import (
-	"errors"
-	"fmt"
 	"microservice/auth_service/auth_pb"
-	g "microservice/gateway/global"
-	"microservice/general"
-	"strings"
-
-	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials/insecure"
 )
 
-type authService struct{}
-
-var authServiceInstance = &authService{}
-
-func NewAuthService() *authService {
-	return authServiceInstance
-}
-
-func (authService) Call(do func(service auth_pb.AuthServiceClient)) {
-	conn, err := grpc.Dial(fmt.Sprintf("%s:%s", g.AuthService.IP, g.AuthService.Port), grpc.WithTransportCredentials(insecure.NewCredentials()))
+// WithAuthService runs do with an auth service client.
+func WithAuthService(do func(client auth_pb.AuthServiceClient)) {
+	conn, err := dial("auth")
 	if err != nil {
-		panic(errors.New("auth service not available"))
+		panic(err)
 	}
 	defer conn.Close()
 
-	service := auth_pb.NewAuthServiceClient(conn)
-	do(service)
-}
-
-func (authService) Check(err *general.Error, errCarrier error) {
-	if err != nil {
-		panic(errors.New(err.ErrMsg + "\n" + err.Message))
-	}
-
-	if errCarrier != nil && strings.Contains(errCarrier.Error(), "connection refused") {
-		panic(errors.New("AuthServiceUnavailable"))
-	}
-	if errCarrier != nil {
-		panic(errors.New("AuthServiceDidNotFinishProperly"))
-	}
-
+	do(auth_pb.NewAuthServiceClient(conn))
 }

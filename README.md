@@ -5,13 +5,20 @@ A Go microservice starter built as a [Go workspace](go.work) with an HTTP gatewa
 ## Architecture
 
 ```
-                 HTTP (JSON)
-Client ─────────────────────►  Gateway  ─────── gRPC ──────►  Auth Service  ──────►  PostgreSQL
-                               :6000                          :6001
+                        HTTP (JSON)
+    Client ────────────────────────────►  Gateway :6000
+                                             │
+                     gRPC                    │ gRPC                gRPC
+             ┌───────────────────────────────┼──────────────────────────┐
+             ▼                               ▼                          ▼
+      Auth Service :6001              Chat Service :6002        Greet Service :6003
+      (users, JWT, Postgres)          (in-memory room messages) (stateless ping)
 ```
 
-- **Gateway** (`gateway/`) — public HTTP API. Validates and parses requests, forwards calls to the appropriate service over gRPC.
-- **Auth Service** (`auth_service/`) — gRPC service handling user registration, credentials, and JWT issuing. Runs SQL migrations on startup.
+- **Gateway** (`gateway/`) — single public HTTP entrypoint. Validates and parses requests, forwards calls to services over gRPC.
+- **Auth Service** (`auth_service/`) — user registration, bcrypt hashing, JWT issuing. Runs SQL migrations on startup.
+- **Chat Service** (`chat_service/`) — in-memory per-room message store. Demonstrates a stateful service without external dependencies.
+- **Greet Service** (`greet_service/`) — stateless ping RPC. Demonstrates how trivially new services plug into the architecture.
 - Shared libraries in `pkg/` (router, errors, database, config loader), shared protobuf messages in `general/`, shared config structs in `config/`.
 
 ## Tech stack
@@ -30,6 +37,8 @@ Client ─────────────────────►  Gatew
 ```
 ├── gateway/          # HTTP gateway (public API)
 ├── auth_service/     # Auth microservice (gRPC) + migrations
+├── chat_service/     # Chat microservice (gRPC, in-memory)
+├── greet_service/    # Greet microservice (gRPC, stateless)
 ├── pkg/              # Shared libraries: router, errors, database, yaml loader
 ├── config/           # Shared configuration structs
 ├── general/          # Shared protobuf messages
@@ -70,16 +79,38 @@ then:
 
 ```sh
 make run-auth      # terminal 1 — gRPC :6001
-make run-gateway   # terminal 2 — HTTP :6000
+make run-chat      # terminal 2 — gRPC :6002
+make run-greet     # terminal 3 — gRPC :6003
+make run-gateway   # terminal 4 — HTTP :6000
 ```
 
-Both services read `../env.yaml` relative to their directory.
+All services read `../env.yaml` relative to their directory.
 
 ## API endpoints
 
-| Method | Path                   | Body                                                                                              | Success |
-|--------|------------------------|---------------------------------------------------------------------------------------------------|---------|
-| POST   | `/api/auth/register/`  | `{"username": "...", "password": "...", "password_confirm": "...", "email": "..."}`               | 201     |
+| Method | Path                        | Body / Query                                                                        | Success |
+|--------|-----------------------------|-------------------------------------------------------------------------------------|---------|
+| POST   | `/api/auth/register/`       | `{"username": "...", "password": "...", "password_confirm": "...", "email": "..."}` | 201     |
+| POST   | `/api/chat/messages/`       | `{"room": "...", "username": "...", "body": "..."}`                                 | 201     |
+| GET    | `/api/chat/messages/{room}/`| —                                                                                   | 200     |
+| GET    | `/api/greet/ping/?name=...` | — (`name` optional)                                                                 | 200     |
+
+Examples:
+
+```sh
+curl -s -X POST localhost:6000/api/greet/ping/ # see below
+```
+
+```sh
+# greet
+curl 'localhost:6000/api/greet/ping/?name=dev'
+# {"greeting":"hello, dev!","server_time":1755000000}
+
+# chat: post and list messages
+curl -X POST localhost:6000/api/chat/messages/ \
+  -d '{"room":"general","username":"dev","body":"hi"}'
+curl localhost:6000/api/chat/messages/general/
+```
 
 Errors are returned as JSON:
 
@@ -94,9 +125,16 @@ make build        # compile all services
 make test         # run unit tests
 make lint         # go vet across all modules
 make tidy         # tidy all go.mod files
-make proto        # regenerate protobuf/gRPC code
+make proto        # regenerate protobuf/gRPC code (needs protoc + plugins)
 make help         # list all targets
 ```
+
+### Adding a new service
+
+1. `mkdir my_service/{my_pb,global,load,service}` and add `module microservice/my_service` in its `go.mod`.
+2. Define the `.proto`, run `make proto`.
+3. Implement the service, listen on an address from `env.yaml` (see `greet_service/main.go` — the smallest example).
+4. Register it under `microservices:` in `env.yaml`, add a call helper + handler in the gateway, and a route in `gateway/routes/http.go`.
 
 Tests in `auth_service/service` use [`go-sqlmock`](https://github.com/DATA-DOG/go-sqlmock),
 so they run without a database. See `CONTRIBUTING.md` for conventions.

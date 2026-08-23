@@ -1,0 +1,31 @@
+@import "tailwindcss";
+
+@theme {
+  --color-surface: #0b1120;
+  --color-panel: #111a2e;
+  --color-panel-2: #16213a;
+  --color-edge: #24304d;
+  --color-edge-hi: #35436b;
+  --color-ink: #e2e8f0;
+  --color-muted: #8fa3bf;
+  --color-accent: #38bdf8;
+  --color-accent-2: #818cf8;
+  --color-ok: #34d399;
+  --color-err: #f87171;
+
+  --font-sans: ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+body {
+  background-color: var(--color-surface);
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% -10%, color-mix(in oklab, var(--color-accent) 14%, transparent), transparent),
+    radial-gradient(ellipse 60% 40% at 90% 110%, color-mix(in oklab, var(--color-accent-2) 10%, transparent), transparent);
+  background-attachment: fixed;
+  color: var(--color-ink);
+}
+
+::selection {
+  background-color: color-mix(in oklab, var(--color-accent) 30%, transparent);
+}

@@ -3,7 +3,6 @@ package load
 import (
 	"fmt"
 	"log"
-	"microservice/auth_service/global"
 	"microservice/config"
 	g "microservice/gateway/global"
 	"microservice/pkg/color"
@@ -27,21 +26,18 @@ func initConfig() {
 		}
 	}
 
-	if _, ok := cfg.Microservices[global.Name]; ok {
-		cfg.CurrentMicroservice = cfg.Microservices[global.Name]
-	} else {
-		log.Fatalf("Microservice definition for %s not found", global.Name)
+	if ms, ok := cfg.Microservices[g.Name]; ok {
+		cfg.CurrentMicroservice = ms
 	}
 
-	global.CFG = cfg
-	global.SecretKeyBytes = []byte(cfg.SecretKey)
+	g.CFG = cfg
 }
 
 func initMicroservices() {
-	if auth, ok := g.CFG.Microservices["auth"]; ok {
-		g.AuthService = &auth
-	} else {
-		log.Fatalln("auth microservice is not defined")
+	for _, name := range []string{"auth", "chat", "greet"} {
+		if _, ok := g.CFG.Microservices[name]; !ok {
+			log.Fatalf("microservice definition for '%s' not found", name)
+		}
 	}
 }
 

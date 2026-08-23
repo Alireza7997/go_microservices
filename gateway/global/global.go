@@ -38,8 +38,5 @@ func (h Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 // Config
 var CFG *config.Config = nil
 
-// Microservices
-var AuthService *config.Microservice = nil
-
 // App
 var Server *http.Server = nil

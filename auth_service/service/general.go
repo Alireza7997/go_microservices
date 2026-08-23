@@ -94,3 +94,16 @@ func (service) GetUser(db *sql.DB, id int64) (*models.User, error) {
 	return user, nil
 }
 
+func (service) GetUserByUsername(db *sql.DB, username string) (*models.User, error) {
+	user := &models.User{}
+	err := db.QueryRow(
+		fmt.Sprintf("SELECT id, username, password FROM %s WHERE username = $1", models.UserTable),
+		username,
+	).Scan(&user.Id, &user.Username, &user.Password)
+	if err != nil {
+		return nil, err
+	}
+
+	return user, nil
+}
+

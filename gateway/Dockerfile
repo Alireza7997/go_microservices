@@ -3,16 +3,23 @@
 # ---- Build stage ----
 FROM golang:1.25-alpine AS build
 
+ENV GOPROXY=https://goproxy.cn,direct
+
 WORKDIR /src
 
-# Copy the workspace first so module resolution works
-COPY go.work go.work.sum ./
+COPY go.work.sum ./
 
 # Copy the modules required to build the gateway
 COPY pkg ./pkg
 COPY config ./config
 COPY general ./general
+COPY auth_service ./auth_service
+COPY chat_service ./chat_service
+COPY greet_service ./greet_service
 COPY gateway ./gateway
+
+# Create a workspace scoped to only the modules present in this build context
+RUN go work init ./gateway ./pkg ./config ./general ./auth_service ./chat_service ./greet_service
 
 WORKDIR /src/gateway
 

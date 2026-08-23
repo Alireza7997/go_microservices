@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+package microservice.chat;
+option go_package = "microservice/chat_service/chat_pb";
+
+message SendMessageRequest {
+    string room = 1;
+    string username = 2;
+    string body = 3;
+}
+
+message Message {
+    int64 id = 1;
+    string room = 2;
+    string username = 3;
+    string body = 4;
+    int64 sent_at = 5;
+}
+
+message SendMessageResponse {
+    Message message = 1;
+}
+
+message GetMessagesRequest {
+    string room = 1;
+}
+
+message GetMessagesResponse {
+    repeated Message messages = 1;
+}
+
+service ChatService {
+    rpc SendMessage(SendMessageRequest) returns (SendMessageResponse) {};
+    rpc GetMessages(GetMessagesRequest) returns (GetMessagesResponse) {};
+}
