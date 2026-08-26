@@ -6,7 +6,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	pkgErrors "microservice/pkg/errors"
+	pkgErrors "github.com/Alireza7997/go_microservices/pkg/errors"
 )
 
 func newTestRouter(t *testing.T) *Router {

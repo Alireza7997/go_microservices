@@ -1,8 +1,8 @@
 package main
 
 import (
-	_ "microservice/gateway/load"
-	"microservice/gateway/app"
+	_ "github.com/Alireza7997/go_microservices/gateway/load"
+	"github.com/Alireza7997/go_microservices/gateway/app"
 )
 
 func main() {

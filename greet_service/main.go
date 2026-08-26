@@ -5,10 +5,10 @@ import (
 	"log/slog"
 	"net"
 
-	"microservice/greet_service/greet_pb"
-	"microservice/greet_service/global"
-	_ "microservice/greet_service/load"
-	"microservice/greet_service/service"
+	"github.com/Alireza7997/go_microservices/greet_service/greet_pb"
+	"github.com/Alireza7997/go_microservices/greet_service/global"
+	_ "github.com/Alireza7997/go_microservices/greet_service/load"
+	"github.com/Alireza7997/go_microservices/greet_service/service"
 
 	"google.golang.org/grpc"
 )

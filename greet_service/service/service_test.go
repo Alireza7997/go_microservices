@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	"microservice/greet_service/greet_pb"
+	"github.com/Alireza7997/go_microservices/greet_service/greet_pb"
 )
 
 func TestPingWithAndWithoutName(t *testing.T) {

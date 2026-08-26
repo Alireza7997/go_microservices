@@ -1,7 +1,7 @@
 package calls
 
 import (
-	"microservice/auth_service/auth_pb"
+	"github.com/Alireza7997/go_microservices/auth_service/auth_pb"
 )
 
 // WithAuthService runs do with an auth service client.

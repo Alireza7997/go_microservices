@@ -5,8 +5,8 @@ import (
 	"database/sql"
 	"testing"
 
-	"microservice/auth_service/auth_pb"
-	"microservice/auth_service/global"
+	"github.com/Alireza7997/go_microservices/auth_service/auth_pb"
+	"github.com/Alireza7997/go_microservices/auth_service/global"
 
 	sqlmock "github.com/DATA-DOG/go-sqlmock"
 	"google.golang.org/protobuf/proto"

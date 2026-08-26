@@ -5,7 +5,7 @@ import (
 	"log/slog"
 	"net/http"
 
-	pkgErrors "microservice/pkg/errors"
+	pkgErrors "github.com/Alireza7997/go_microservices/pkg/errors"
 )
 
 type ErrorResponse struct {

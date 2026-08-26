@@ -3,7 +3,7 @@ syntax = "proto3";
 import "general/general.proto";
 
 package microservice.auth;
-option go_package = "microservice/auth/auth_pb";
+option go_package = "github.com/Alireza7997/go_microservices/auth_service/auth_pb";
 
 
 message User {

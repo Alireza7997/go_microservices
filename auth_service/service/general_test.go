@@ -4,8 +4,8 @@ import (
 	"testing"
 	"time"
 
-	"microservice/auth_service/global"
-	"microservice/auth_service/models"
+	"github.com/Alireza7997/go_microservices/auth_service/global"
+	"github.com/Alireza7997/go_microservices/auth_service/models"
 
 	"github.com/golang-jwt/jwt/v5"
 )

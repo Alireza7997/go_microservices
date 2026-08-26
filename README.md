@@ -1,4 +1,4 @@
-# Microservice
+# go_microservices
 
 A Go microservice starter built as a [Go workspace](go.work) with an HTTP gateway that talks to backend services over gRPC.
 
@@ -131,7 +131,7 @@ make help         # list all targets
 
 ### Adding a new service
 
-1. `mkdir my_service/{my_pb,global,load,service}` and add `module microservice/my_service` in its `go.mod`.
+1. `mkdir my_service/{my_pb,global,load,service}` and add `module github.com/Alireza7997/go_microservices/my_service` in its `go.mod`.
 2. Define the `.proto`, run `make proto`.
 3. Implement the service, listen on an address from `env.yaml` (see `greet_service/main.go` — the smallest example).
 4. Register it under `microservices:` in `env.yaml`, add a call helper + handler in the gateway, and a route in `gateway/routes/http.go`.

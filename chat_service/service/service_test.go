@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	"microservice/chat_service/chat_pb"
+	"github.com/Alireza7997/go_microservices/chat_service/chat_pb"
 )
 
 func TestStoreInsertAndList(t *testing.T) {

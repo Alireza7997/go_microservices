@@ -5,10 +5,10 @@ import (
 	"log/slog"
 	"net"
 
-	"microservice/chat_service/chat_pb"
-	"microservice/chat_service/global"
-	_ "microservice/chat_service/load"
-	"microservice/chat_service/service"
+	"github.com/Alireza7997/go_microservices/chat_service/chat_pb"
+	"github.com/Alireza7997/go_microservices/chat_service/global"
+	_ "github.com/Alireza7997/go_microservices/chat_service/load"
+	"github.com/Alireza7997/go_microservices/chat_service/service"
 
 	"google.golang.org/grpc"
 )

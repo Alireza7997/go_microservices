@@ -3,8 +3,8 @@ package g
 import (
 	_ "embed"
 	"errors"
-	"microservice/config"
-	"microservice/pkg/router"
+	"github.com/Alireza7997/go_microservices/config"
+	"github.com/Alireza7997/go_microservices/pkg/router"
 	"net/http"
 )
 

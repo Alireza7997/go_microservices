@@ -3,9 +3,9 @@ package load
 import (
 	"log/slog"
 
-	"microservice/chat_service/global"
-	"microservice/config"
-	"microservice/pkg/loader"
+	"github.com/Alireza7997/go_microservices/chat_service/global"
+	"github.com/Alireza7997/go_microservices/config"
+	"github.com/Alireza7997/go_microservices/pkg/loader"
 )
 
 var cfg = &config.Config{}

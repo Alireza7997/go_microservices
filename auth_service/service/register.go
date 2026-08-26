@@ -2,10 +2,10 @@ package service
 
 import (
 	"context"
-	"microservice/auth_service/auth_pb"
-	"microservice/auth_service/global"
-	"microservice/general"
-	"microservice/pkg/database"
+	"github.com/Alireza7997/go_microservices/auth_service/auth_pb"
+	"github.com/Alireza7997/go_microservices/auth_service/global"
+	"github.com/Alireza7997/go_microservices/general"
+	"github.com/Alireza7997/go_microservices/pkg/database"
 
 	"github.com/kataras/iris/v12"
 )

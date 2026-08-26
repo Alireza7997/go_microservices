@@ -5,10 +5,10 @@ import (
 	"log/slog"
 	"net/http"
 
-	g "microservice/gateway/global"
-	"microservice/gateway/middleware"
-	"microservice/gateway/routes"
-	"microservice/pkg/router"
+	g "github.com/Alireza7997/go_microservices/gateway/global"
+	"github.com/Alireza7997/go_microservices/gateway/middleware"
+	"github.com/Alireza7997/go_microservices/gateway/routes"
+	"github.com/Alireza7997/go_microservices/pkg/router"
 )
 
 func API() {

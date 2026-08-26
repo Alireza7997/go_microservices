@@ -2,8 +2,8 @@ package global
 
 import (
 	_ "embed"
-	"microservice/config"
-	"microservice/pkg/database"
+	"github.com/Alireza7997/go_microservices/config"
+	"github.com/Alireza7997/go_microservices/pkg/database"
 )
 
 //go:embed version

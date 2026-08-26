@@ -3,10 +3,10 @@ package load
 import (
 	"fmt"
 	"log"
-	"microservice/config"
-	g "microservice/gateway/global"
-	"microservice/pkg/color"
-	"microservice/pkg/loader"
+	"github.com/Alireza7997/go_microservices/config"
+	g "github.com/Alireza7997/go_microservices/gateway/global"
+	"github.com/Alireza7997/go_microservices/pkg/color"
+	"github.com/Alireza7997/go_microservices/pkg/loader"
 )
 
 var cfg = &config.Config{}

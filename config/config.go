@@ -1,6 +1,6 @@
 package config
 
-import "microservice/pkg/database"
+import "github.com/Alireza7997/go_microservices/pkg/database"
 
 type (
 	Config struct {

@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"strings"
 
-	g "microservice/gateway/global"
+	g "github.com/Alireza7997/go_microservices/gateway/global"
 )
 
 var allowMethods = "GET, POST, PUT, PATCH, DELETE, OPTIONS"

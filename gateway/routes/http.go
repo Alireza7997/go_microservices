@@ -1,8 +1,8 @@
 package routes
 
 import (
-	"microservice/gateway/handlers"
-	"microservice/pkg/router"
+	"github.com/Alireza7997/go_microservices/gateway/handlers"
+	"github.com/Alireza7997/go_microservices/pkg/router"
 )
 
 func InitRoutes(router *router.Router) {

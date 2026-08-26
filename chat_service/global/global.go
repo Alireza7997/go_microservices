@@ -2,7 +2,7 @@ package global
 
 import (
 	_ "embed"
-	"microservice/config"
+	"github.com/Alireza7997/go_microservices/config"
 )
 
 //go:embed version

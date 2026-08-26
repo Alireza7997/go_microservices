@@ -1,4 +1,4 @@
-module microservice/chat_service
+module github.com/Alireza7997/go_microservices/chat_service
 
 go 1.25.0
 

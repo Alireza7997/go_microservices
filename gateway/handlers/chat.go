@@ -3,13 +3,13 @@ package handlers
 import (
 	"net/http"
 
-	"microservice/chat_service/chat_pb"
-	"microservice/gateway/calls"
-	"microservice/gateway/dto"
-	g "microservice/gateway/global"
-	"microservice/gateway/handlers/utils"
-	"microservice/pkg/errors"
-	"microservice/pkg/router"
+	"github.com/Alireza7997/go_microservices/chat_service/chat_pb"
+	"github.com/Alireza7997/go_microservices/gateway/calls"
+	"github.com/Alireza7997/go_microservices/gateway/dto"
+	g "github.com/Alireza7997/go_microservices/gateway/global"
+	"github.com/Alireza7997/go_microservices/gateway/handlers/utils"
+	"github.com/Alireza7997/go_microservices/pkg/errors"
+	"github.com/Alireza7997/go_microservices/pkg/router"
 )
 
 func postMessage(w http.ResponseWriter, r *http.Request) {

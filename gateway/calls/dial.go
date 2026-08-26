@@ -3,8 +3,8 @@ package calls
 import (
 	"fmt"
 
-	g "microservice/gateway/global"
-	"microservice/pkg/errors"
+	g "github.com/Alireza7997/go_microservices/gateway/global"
+	"github.com/Alireza7997/go_microservices/pkg/errors"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"

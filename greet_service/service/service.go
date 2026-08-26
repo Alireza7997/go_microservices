@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	"microservice/greet_service/greet_pb"
+	"github.com/Alireza7997/go_microservices/greet_service/greet_pb"
 )
 
 type service struct {

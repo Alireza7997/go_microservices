@@ -1,4 +1,4 @@
-module microservice/greet_service
+module github.com/Alireza7997/go_microservices/greet_service
 
 go 1.25.0
 

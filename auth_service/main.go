@@ -5,10 +5,10 @@ import (
 	"log/slog"
 	"net"
 
-	"microservice/auth_service/auth_pb"
-	"microservice/auth_service/global"
-	_ "microservice/auth_service/load"
-	"microservice/auth_service/service"
+	"github.com/Alireza7997/go_microservices/auth_service/auth_pb"
+	"github.com/Alireza7997/go_microservices/auth_service/global"
+	_ "github.com/Alireza7997/go_microservices/auth_service/load"
+	"github.com/Alireza7997/go_microservices/auth_service/service"
 
 	"google.golang.org/grpc"
 )
