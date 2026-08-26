@@ -1,13 +1,13 @@
 package config
 
-import "microservice/pkg/database"
+import "github.com/Alireza7997/go_microservices/pkg/database"
 
 type (
 	Config struct {
 		CurrentMicroservice   Microservice
 		Gateway               Microservice            `yaml:"gateway"`
 		Microservices         map[string]Microservice `yaml:"microservices"`
-		Debug                 bool                    `taml:"debug"`
+		Debug                 bool                    `yaml:"debug"`
 		Domain                string                  `yaml:"domain"`
 		PWD                   string                  `yaml:"pwd"`
 		AllowOrigins          string                  `yaml:"allow_origins"`

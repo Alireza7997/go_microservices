@@ -3,7 +3,7 @@ syntax = "proto3";
 import "general/general.proto";
 
 package microservice.auth;
-option go_package = "microservice/auth/auth_pb";
+option go_package = "github.com/Alireza7997/go_microservices/auth_service/auth_pb";
 
 
 message User {
@@ -27,6 +27,18 @@ message RegisterResponse {
     int64 userID = 2;
 }
 
+message LoginRequest {
+    string user_name = 1;
+    string password  = 2;
+}
+
+message LoginResponse {
+    general.Error err   = 1;
+    int64 userID        = 2;
+    string token        = 3;
+}
+
 service AuthService{
     rpc Register(RegisterRequest) returns (RegisterResponse) {};
+    rpc Login(LoginRequest) returns (LoginResponse) {};
 }

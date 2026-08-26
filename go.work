@@ -1,8 +1,11 @@
-go 1.21.5
+go 1.25.0
 
 use (
 	./auth_service
+	./chat_service
 	./config
+	./gateway
 	./general
+	./greet_service
 	./pkg
 )

@@ -1,3 +1,5 @@
-module microservice/general
+module github.com/Alireza7997/go_microservices/general
 
-go 1.21.5
+go 1.25.0
+
+require google.golang.org/protobuf v1.36.12

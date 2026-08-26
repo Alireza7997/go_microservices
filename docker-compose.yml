@@ -1,0 +1,66 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-alireza}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}
+      POSTGRES_DB: authDB
+    ports:
+      - "5433:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-alireza} -d authDB"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  auth:
+    build:
+      context: .
+      dockerfile: auth_service/Dockerfile
+    volumes:
+      - ./env.yaml:/app/env.yaml:ro
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  chat:
+    build:
+      context: .
+      dockerfile: chat_service/Dockerfile
+    volumes:
+      - ./env.yaml:/app/env.yaml:ro
+
+  greet:
+    build:
+      context: .
+      dockerfile: greet_service/Dockerfile
+    volumes:
+      - ./env.yaml:/app/env.yaml:ro
+
+  gateway:
+    build:
+      context: .
+      dockerfile: gateway/Dockerfile
+    ports:
+      - "8000:6000"
+    volumes:
+      - ./env.yaml:/app/env.yaml:ro
+    depends_on:
+      - auth
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        NEXT_PUBLIC_GATEWAY_URL: http://localhost:8000
+    ports:
+      - "8080:3000"
+    depends_on:
+      - gateway
+
+volumes:
+  pgdata:

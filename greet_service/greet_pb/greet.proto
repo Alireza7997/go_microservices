@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package microservice.greet;
+option go_package = "github.com/Alireza7997/go_microservices/greet_service/greet_pb";
+
+message PingRequest {
+    string name = 1;
+}
+
+message PingResponse {
+    string greeting = 1;
+    int64 server_time = 2;
+}
+
+service GreetService {
+    rpc Ping(PingRequest) returns (PingResponse) {};
+}

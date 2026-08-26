@@ -3,10 +3,10 @@ package load
 import (
 	"fmt"
 	"log"
-	"microservice/auth/global"
-	"microservice/config"
-	"microservice/pkg/database"
-	"microservice/pkg/loader"
+	"github.com/Alireza7997/go_microservices/auth_service/global"
+	"github.com/Alireza7997/go_microservices/config"
+	"github.com/Alireza7997/go_microservices/pkg/database"
+	"github.com/Alireza7997/go_microservices/pkg/loader"
 
 	migrate "github.com/rubenv/sql-migrate"
 )

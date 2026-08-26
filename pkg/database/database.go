@@ -6,6 +6,8 @@ import (
 	"log"
 	"os"
 	"strings"
+
+	_ "github.com/lib/pq"
 )
 
 type (
@@ -40,6 +42,8 @@ func New(dbs map[string]Database, debug bool) (cons map[string]RelationalDatabas
 			return db, err
 		}
 	}
+
+	cons = make(map[string]RelationalDatabaseFunction)
 
 	for k, v := range dbs {
 		dbConfig := ""

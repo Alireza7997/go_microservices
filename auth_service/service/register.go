@@ -2,19 +2,15 @@ package service
 
 import (
 	"context"
-	"microservice/auth/auth_pb"
-	"microservice/auth/global"
-	"microservice/general"
-	"microservice/pkg/database"
+	"github.com/Alireza7997/go_microservices/auth_service/auth_pb"
+	"github.com/Alireza7997/go_microservices/auth_service/global"
+	"github.com/Alireza7997/go_microservices/general"
+	"github.com/Alireza7997/go_microservices/pkg/database"
 
 	"github.com/kataras/iris/v12"
 )
 
 func (s *service) Register(ctx context.Context, req *auth_pb.RegisterRequest) (*auth_pb.RegisterResponse, error) {
-	// Create database connnection and closing it when we are finished using it
-	db := database.Connect(global.DB)
-	defer db.Close()
-
 	// Getting request values
 	var (
 		username        = req.GetUserName()
@@ -30,11 +26,14 @@ func (s *service) Register(ctx context.Context, req *auth_pb.RegisterRequest) (*
 	if passwordConfirm != password {
 		response.Err = &general.Error{
 			Code:    iris.StatusBadRequest,
-			ErrMsg:  "",
 			Message: "passwords should be the same",
 		}
 		return response, nil
 	}
+
+	// Create database connection and close it when we are finished using it
+	db := database.Connect(global.DB)
+	defer db.Close()
 
 	// Hash the password
 	hashedPassword, err := s.HashPassword(password)
@@ -51,7 +50,6 @@ func (s *service) Register(ctx context.Context, req *auth_pb.RegisterRequest) (*
 	if exists {
 		response.Err = &general.Error{
 			Code:    iris.StatusBadRequest,
-			ErrMsg:  "",
 			Message: "username already taken",
 		}
 		return response, nil
